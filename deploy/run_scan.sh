@@ -9,6 +9,6 @@ source ~/.aws/credentials &&
 ./deploy -deploy     &&
 
 go build ../scream  &&
-./scream -host $(./deploy -server_dns 2>/dev/null) -start 8003 -end 8003 | tee portscan.log &&
+./scream -host $(./deploy -server_dns 2>/dev/null) -start 1025 -end 65535 | tee portscan.log &&
 ./deploy -remove_node 1 &&
 rm deploy scream
