@@ -1,2 +1,4 @@
 listen/listen
 scream/scream
+deploy/*.log
+deploy/deploy

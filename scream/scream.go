@@ -27,10 +27,17 @@ func main() {
 
 	log.SetOutput(os.Stderr)
 
+	log.Println("Screaming at", *host)
+
 	// try full port range above root ports
-	for i := *start; i < *end; i++ {
+	for i := *start; i <= *end; i++ {
 		sema <- struct{}{}
 		go dial(i)
+	}
+
+	// full queue signifies all workers done
+	for i := 0; i < *workers; i++ {
+		sema <- struct{}{}
 	}
 
 }
@@ -38,11 +45,8 @@ func main() {
 func dial(port int) {
 	defer func() { <-sema }()
 
-	// log.Println("Dialing:", port)
-
 	conn, err := net.DialTimeout("tcp", *host+":"+strconv.Itoa(port), *timeout)
 	if err != nil {
-		// log.Println(err)
 		return
 	}
 	defer conn.Close()
