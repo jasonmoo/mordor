@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net"
-	"os"
 	"strconv"
 	"time"
 )
@@ -18,14 +17,14 @@ var (
 	start = flag.Int("start", 1025, "start of port range")
 	end   = flag.Int("end", 65535, "start of port range")
 
-	sema = make(chan struct{}, *workers)
+	sema chan struct{}
 )
 
 func main() {
 
 	flag.Parse()
 
-	log.SetOutput(os.Stderr)
+	sema = make(chan struct{}, *workers)
 
 	log.Println("Screaming at", *host)
 
